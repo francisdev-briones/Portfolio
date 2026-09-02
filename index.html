@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Francis.dev</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --bg:#050505;
+    --panel:#0a0a0a;
+    --ink:#f5f4f0;
+    --muted:#9a9a94;
+    --line:rgba(245,244,240,0.14);
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; height:100%; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    overflow:hidden;
+  }
+
+  .binary-rain{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    pointer-events:none;
+    opacity:0.55;
+  }
+
+  .hero-photo{
+    position:absolute;
+    top:0; right:0;
+    width:62%;
+    height:100%;
+    z-index:0;
+  }
+  .hero-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:top center;
+    filter:grayscale(1) contrast(1.1);
+    display:block;
+  }
+  .hero-photo::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,
+      var(--bg) 0%,
+      rgba(5,5,5,0.85) 18%,
+      rgba(5,5,5,0.35) 40%,
+      rgba(5,5,5,0) 62%);
+  }
+  .hero-photo::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(5,5,5,0.15), rgba(5,5,5,0.55) 88%);
+  }
+
+  header{
+    position:relative;
+    z-index:10;
+    padding:34px 60px 0;
+  }
+  nav{
+    max-width:1400px;
+    margin:0 auto -10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .logo{
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    font-size:1.15rem;
+    letter-spacing:0.02em;
+  }
+  .logo .dot{ color:var(--ink); opacity:0.4; }
+  nav ul{
+    list-style:none;
+    display:flex;
+    gap:40px;
+    margin:0;
+    padding:0;
+  }
+  nav ul a{
+    color:var(--ink);
+    text-decoration:none;
+    font-size:0.78rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    font-weight:500;
+    opacity:0.75;
+    transition:opacity 0.2s ease;
+  }
+  nav ul a:hover{ opacity:1; }
+  .contact-btn{
+    border:1px solid var(--line);
+    color:var(--ink);
+    text-decoration:none;
+    font-size:0.78rem;
+    letter-spacing:0.06em;
+    padding:11px 22px;
+    border-radius:100px;
+    white-space:nowrap;
+    transition:border-color 0.2s ease, background 0.2s ease;
+  }
+  .contact-btn:hover{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+
+  .hero-body{
+    position:relative;
+    z-index:5;
+    max-width:1400px;
+    margin:0 auto;
+    padding:0 60px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    min-height:78vh;
+  }
+
+  .hero-text{ max-width:640px; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 22px;
+  }
+
+  .hero-text h1{
+    font-family:'Archivo', sans-serif;
+    font-weight:300;
+    font-size:4.5rem;
+    line-height:0.98;
+    letter-spacing:-0.01em;
+    text-transform:uppercase;
+    margin:0 0 26px;
+  }
+  .hero-text h1 strong{ font-weight:700; }
+
+  .hero-text p{
+    font-size:0.98rem;
+    color:var(--muted);
+    line-height:1.7;
+    max-width:420px;
+    margin:0 0 38px;
+  }
+
+  .cta-row{ display:flex; gap:16px; flex-wrap:wrap; }
+  .btn{
+    font-size:0.86rem;
+    font-weight:600;
+    text-decoration:none;
+    padding:15px 28px;
+    border-radius:2px;
+    letter-spacing:0.01em;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:transform 0.15s ease, background 0.2s ease, color 0.2s ease;
+  }
+  .btn-solid{ background:var(--ink); color:var(--bg); }
+  .btn-solid:hover{ transform:translateY(-2px); }
+  .btn-outline{ background:transparent; color:var(--ink); border:1px solid var(--line); }
+  .btn-outline:hover{ border-color:var(--ink); transform:translateY(-2px); }
+
+  .stats{
+    position:relative;
+    z-index:5;
+    max-width:1400px;
+    margin:0 auto;
+    padding:30px 60px;
+    display:grid;
+    grid-template-columns:repeat(4, auto);
+    gap:40px;
+    border-top:1px solid var(--line);
+  }
+  .stat h3{
+    font-family:'Archivo', sans-serif;
+    font-weight:700;
+    font-size:2.1rem;
+    margin:0 0 6px;
+  }
+  .stat p{
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--muted);
+    margin:0;
+  }
+
+  /* ---------- SHARED SECTION STYLES ---------- */
+  section{ scroll-margin-top:40px; }
+  .section-inner{
+    max-width:1100px;
+    margin:0 auto;
+    padding:100px 60px;
+  }
+  .section-head{
+    margin-bottom:56px;
+  }
+  .section-head .eyebrow{ margin-bottom:14px; }
+  .section-head h2{
+    font-family:'Archivo', sans-serif;
+    font-weight:600;
+    font-size:2.1rem;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about-section{
+    background:var(--panel);
+    border-top:1px solid var(--line);
+  }
+  .about-section .section-inner{ padding:100px 60px; }
+  .about-section p.body-text{
+    color:var(--muted);
+    font-size:1.02rem;
+    line-height:1.85;
+    max-width:700px;
+    margin:0;
+  }
+
+  /* ---------- SKILLS ---------- */
+  .skills-section{
+    background:var(--bg);
+    border-top:1px solid var(--line);
+  }
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .skill-tile{
+    background:var(--bg);
+    padding:26px 22px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .skill-tile span.tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.68rem;
+    color:var(--muted);
+    letter-spacing:0.08em;
+  }
+  .skill-tile span.name{
+    font-family:'Archivo', sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .projects-section{
+    background:var(--panel);
+    border-top:1px solid var(--line);
+  }
+  .projects-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:24px;
+  }
+  .project-card{
+    border:1px solid var(--line);
+    background:var(--bg);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    transition:border-color 0.2s ease, transform 0.2s ease;
+  }
+  .project-card:hover{ border-color:rgba(245,244,240,0.35); transform:translateY(-3px); }
+  .project-thumb{
+    width:100%;
+    aspect-ratio:16/10;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+    background:#111;
+  }
+  .project-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    filter:grayscale(0.15);
+    transition:transform 0.5s ease;
+  }
+  .project-card:hover .project-thumb img{ transform:scale(1.04); }
+  .project-body{
+    padding:30px 32px 32px;
+    display:flex;
+    flex-direction:column;
+    flex:1;
+  }
+  .project-card .index{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.75rem;
+    color:var(--muted);
+    margin-bottom:14px;
+    display:block;
+  }
+  .project-card h3{
+    font-family:'Archivo', sans-serif;
+    font-size:1.25rem;
+    margin:0 0 10px;
+  }
+  .project-duration{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.05em;
+    color:var(--muted);
+    border:1px solid var(--line);
+    border-radius:100px;
+    padding:5px 12px;
+    margin-bottom:16px;
+    width:fit-content;
+  }
+  .project-card p.desc{
+    color:var(--muted);
+    font-size:0.92rem;
+    line-height:1.7;
+    margin:0 0 18px;
+  }
+  .project-feedback{
+    border-left:2px solid var(--line);
+    padding:2px 0 2px 16px;
+    margin:0 0 22px;
+  }
+  .project-feedback p{
+    font-style:italic;
+    color:var(--ink);
+    opacity:0.85;
+    font-size:0.88rem;
+    line-height:1.6;
+    margin:0 0 6px;
+  }
+  .project-feedback cite{
+    font-style:normal;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.05em;
+    color:var(--muted);
+  }
+  .project-card .links{
+    margin-top:auto;
+    display:flex;
+    gap:18px;
+  }
+  .project-card a{
+    color:var(--ink);
+    font-size:0.8rem;
+    letter-spacing:0.05em;
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    padding-bottom:2px;
+  }
+  .project-card a:hover{ border-color:var(--ink); }
+
+  /* ---------- CERTIFICATIONS ---------- */
+  .certifications-section{
+    background:var(--bg);  
+    border-top:1px solid var(--line);
+  }
+  .cert-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:28px;
+  }
+  .cert-card{
+    border:1px solid var(--line);
+    background:var(--panel);
+    overflow:hidden;
+    transition:border-color 0.2s ease, transform 0.2s ease;
+  }
+  .cert-card:hover{ border-color:rgba(245,244,240,0.35); transform:translateY(-3px); }
+  .cert-thumb{
+    width:100%;
+    aspect-ratio:4/3;
+    overflow:hidden;
+    background:#fff;
+    border-bottom:1px solid var(--line);
+  }
+  .cert-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+  }
+  .cert-body{
+    padding:26px 28px 28px;
+  }
+  .cert-body .issuer{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin:0 0 10px;
+  }
+  .cert-body h3{
+    font-family:'Archivo', sans-serif;
+    font-size:1.2rem;
+    margin:0 0 12px;
+  }
+  .cert-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .cert-meta span{
+    font-size:0.72rem;
+    letter-spacing:0.03em;
+    color:var(--muted);
+    border:1px solid var(--line);
+    border-radius:100px;
+    padding:5px 12px;
+  }
+  .cert-body a{
+    color:var(--ink);
+    font-size:0.8rem;
+    letter-spacing:0.05em;
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    padding-bottom:2px;
+  }
+  .cert-body a:hover{ border-color:var(--ink); }
+  
+  /* ---------- CONTACT / FOOTER ---------- */
+  .contact-section{
+    background:var(--panel);
+    border-top:1px solid var(--line);
+  }
+  .contact-section .section-inner{
+    padding:100px 60px 60px;
+    text-align:left;
+  }
+  .contact-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:30px;
+  }
+  .contact-row h2{
+    font-family:'Archivo', sans-serif;
+    font-weight:300;
+    font-size:2.6rem;
+    text-transform:uppercase;
+    margin:0;
+    max-width:520px;
+    line-height:1.1;
+  }
+  .contact-row h2 strong{ font-weight:700; }
+
+  /* ---------- SOCIAL LINKS ---------- */
+  .social-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-top:60px;
+    padding-top:30px;
+    border-top:1px solid var(--line);
+  }
+  .social-link{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    padding:16px 22px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    text-decoration:none;
+    flex:1 1 200px;
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .social-link:hover{
+    border-color:var(--accent, #7dd3fc);
+    background:rgba(255,255,255,0.03);
+  }
+  .social-label{
+    font-family:'Space Mono', monospace;
+    font-size:0.7rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .social-value{
+    font-size:0.9rem;
+    color:#fff;
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:26px 60px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+    font-size:0.75rem;
+    color:var(--muted);
+    letter-spacing:0.03em;
+  }
+  
+  /* ---------- ANIMATIONS ---------- */
+  @keyframes fadeInUp{
+    from{ opacity:0; transform:translateY(22px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @keyframes fadeIn{
+    from{ opacity:0; }
+    to{ opacity:1; }
+  }
+  @keyframes blink{
+    0%, 45%{ opacity:1; }
+    50%, 100%{ opacity:0; }
+  }
+  @keyframes floatY{
+    0%, 100%{ transform:translateY(0); }
+    50%{ transform:translateY(-6px); }
+  }
+
+  header{ animation:fadeIn 0.9s ease both; }
+  .hero-text .eyebrow{ animation:fadeInUp 0.7s ease both 0.15s; }
+  .hero-text .eyebrow::after{
+    content:"_";
+    margin-left:2px;
+    animation:blink 1.1s step-end infinite;
+  }
+  .hero-text h1{ animation:fadeInUp 0.8s ease both 0.3s; }
+  .hero-text p{ animation:fadeInUp 0.8s ease both 0.45s; }
+  .cta-row{ animation:fadeInUp 0.8s ease both 0.6s; }
+  .stats{ animation:fadeIn 1s ease both 0.9s; }
+  .stat{ transition:transform 0.25s ease; }
+  .stat:hover{ transform:translateY(-4px); }
+  .stat:hover h3{ color:#fff; }
+
+  .btn{ position:relative; overflow:hidden; }
+  .btn::before{
+    content:"";
+    position:absolute;
+    top:0; left:-60%;
+    width:40%; height:100%;
+    background:linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
+    transform:skewX(-20deg);
+    transition:left 0.55s ease;
+  }
+  .btn:hover::before{ left:120%; }
+
+  .logo{ transition:letter-spacing 0.25s ease; }
+  .logo:hover{ letter-spacing:0.05em; }
+
+  nav ul a{ position:relative; }
+  nav ul a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:-4px;
+    width:0; height:1px;
+    background:var(--ink);
+    transition:width 0.25s ease;
+  }
+  nav ul a:hover::after{ width:100%; }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.is-visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .reveal-stagger > *{
+    opacity:0;
+    transform:translateY(20px);
+    transition:opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal-stagger.is-visible > *{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .reveal-stagger.is-visible > *:nth-child(1){ transition-delay:0.05s; }
+  .reveal-stagger.is-visible > *:nth-child(2){ transition-delay:0.12s; }
+  .reveal-stagger.is-visible > *:nth-child(3){ transition-delay:0.19s; }
+  .reveal-stagger.is-visible > *:nth-child(4){ transition-delay:0.26s; }
+  .reveal-stagger.is-visible > *:nth-child(5){ transition-delay:0.33s; }
+  .reveal-stagger.is-visible > *:nth-child(6){ transition-delay:0.4s; }
+
+  .skill-tile{ transition:background 0.25s ease, transform 0.25s ease; }
+  .skill-tile:hover{ background:#0f0f0f; transform:translateY(-3px); }
+
+  .cert-thumb img{ transition:transform 0.5s ease; }
+  .cert-card:hover .cert-thumb img{ transform:scale(1.04); }
+
+  @media (max-width: 980px){
+    header{ padding:24px 26px 0; }
+    nav ul{ display:none; }
+    .hero-photo{ width:100%; opacity:0.5; }
+    .hero-body{ padding:0 26px; min-height:60vh; }
+    .hero-text h1{ font-size:3rem; }
+    .stats{ grid-template-columns:repeat(2, 1fr); padding:28px 26px 40px; gap:28px; }
+    .section-inner{ padding:70px 26px; }
+    .projects-grid, .cert-grid{ grid-template-columns:1fr; }
+    .contact-row h2{ font-size:2rem; }
+    footer{ padding:22px 26px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <canvas id="binary-rain" class="binary-rain"></canvas>
+    <div class="hero-photo">
+      <img src="hero_profile.png" alt="Francis portrait">
+    </div>
+
+    <header>
+      <nav>
+        <div class="logo">FRANCIS<span class="dot">.dev</span></div>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#certifications">Certifications</a></li>
+        </ul>
+        <a href="#contact" class="contact-btn">Contact Me →</a>
+      </nav>
+    </header>
+
+    <div class="hero-body">
+      <div class="hero-text">
+        <p class="eyebrow">Developer — Portfolio</p>
+        <h1>Code. Create.<br><strong>Innovate.</strong></h1>
+        <p>I'm Francis, I build responsive, user-friendly websites while continuously learning modern web technologies.</p>
+        <div class="cta-row">
+          <a href="#projects" class="btn btn-solid">View My Work →</a>
+          <a href="#contact" class="btn btn-outline">Hire Me</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <h3>3+</h3>
+        <p>Years Writing Code</p>
+      </div>
+      <div class="stat">
+        <h3>2+</h3>
+        <p>Projects Shipped</p>
+      </div>
+      <div class="stat">
+        <h3>100%</h3>
+        <p>Client Satisfaction</p>
+      </div>
+      <div class="stat">
+        <h3>2</h3>
+        <p>Certifications Earned</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about" class="about-section">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <p class="eyebrow">01 — Who I Am</p>
+        <h2>About Me</h2>
+      </div>
+      <p class="body-text reveal">I am a third-year IT student passionate about web development and technology. I enjoy turning ideas into interactive websites using HTML, CSS, JavaScript, and modern frameworks. My goal is to become a skilled Full-Stack Developer by continuously learning, building meaningful projects, and solving real-world problems.</p>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="skills" class="skills-section">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <p class="eyebrow">02 — What I Use</p>
+        <h2>Skills</h2>
+      </div>
+      <div class="skills-grid reveal-stagger">
+        <div class="skill-tile"><span class="tag">Markup</span><span class="name">HTML5</span></div>
+        <div class="skill-tile"><span class="tag">Styling</span><span class="name">CSS3</span></div>
+        <div class="skill-tile"><span class="tag">Logic</span><span class="name">JavaScript</span></div>
+        <div class="skill-tile"><span class="tag">Layout</span><span class="name">Responsive Design</span></div>
+        <div class="skill-tile"><span class="tag">Workflow</span><span class="name">Git &amp; GitHub</span></div>
+        <div class="skill-tile"><span class="tag">Practice</span><span class="name">Accessibility</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects" class="projects-section">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <p class="eyebrow">03 — Selected Work</p>
+        <h2>Projects</h2>
+      </div>
+      <div class="projects-grid reveal-stagger">
+
+        <div class="project-card">
+          <div class="project-thumb">
+            <img src="Online-voting.png" alt="Screenshot of the Online Voting System">
+          </div>
+          <div class="project-body">
+            <span class="index">01</span>
+            <h3>CSGB - Online Voting System</h3>
+            <span class="project-duration">⏱ July 2026 — 3 weeks</span>
+            <p class="desc">This system — an accurate and real-time responsive voting system built from semantic HTML, hand-written CSS, vanilla JavaScript and PHP. Features the simple and elegant user experience.</p>
+            <div class="project-feedback">
+              <p>"Clean, fast, and easy to navigate. It gave me a clear picture of Francis's skills in under a minute."</p>
+              <cite>— Prof. Dominic Azupardo, Tech Professor</cite>
+            </div>
+            <div class="links">
+              <a href="https://your-username.github.io/your-repo/" target="_blank" rel="noopener">Live Site →</a>
+              <a href="https://github.com/your-username/your-repo" target="_blank" rel="noopener">Source Code →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-thumb">
+            <img src="Enrollment-system.png" alt="Screenshot of the Enrollment System">
+          </div>
+          <div class="project-body">
+            <span class="index">02</span>
+            <h3>CCDI Enrollment System</h3>
+            <span class="project-duration">⏱ Jul 2026 — 2 weeks</span>
+            <p class="desc">A reliable online website for efficient process of enrollment. Built a strong information requirements to ensure proper school records, using HTML, CSS, JavaScript, and PHP. Featuring a high-quality UI designs and user experience.</p>
+            <div class="project-feedback">
+              <p>"Simple to use and it actually makes my enrollment efficient and accurate."</p>
+              <cite>— Mark Genesis Espejo, BSIT C</cite>
+            </div>
+            <div class="links">
+              <a href="#" target="_blank" rel="noopener">Live Demo →</a>
+              <a href="#" target="_blank" rel="noopener">Source Code →</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CERTIFICATIONS ============ -->
+  <section id="certifications" class="certifications-section">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <p class="eyebrow">04 — Credentials</p>
+        <h2>Certifications</h2>
+      </div>
+      <div class="cert-grid reveal-stagger">
+
+        <div class="cert-card">
+          <div class="cert-thumb">
+            <img src="certificate-data_analytics.png" alt="Data Analytics certificate of completion">
+          </div>
+          <div class="cert-body">
+            <p class="issuer">CISCO Networking Academy</p>
+            <h3>Data Analytics</h3>
+            <div class="cert-meta">
+              <span>Certificate of Completion</span>
+              <span>Issued Aug 26, 2026</span>
+            </div>
+            <a href="certificate-data_analytics.png" target="_blank" rel="noopener">View Certificate →</a>
+          </div>
+        </div>
+
+        <div class="cert-card">
+          <div class="cert-thumb">
+            <img src="certificate-css.png" alt="Introduction to CSS certificate of completion">
+          </div>
+          <div class="cert-body">
+            <p class="issuer">TESDA — eTESDA Online Program</p>
+            <h3>Introduction to CSS</h3>
+            <div class="cert-meta">
+              <span>Certificate of Completion</span>
+              <span>Issued Jul 24, 2026</span>
+            </div>
+            <a href="certificate-css.png" target="_blank" rel="noopener">View Certificate →</a>
+          </div>
+        </div>
+
+        <div class="cert-card">
+          <div class="cert-thumb">
+            <img src="certificate-html.png" alt="HTML Fundamentals certificate of achievement">
+          </div>
+          <div class="cert-body">
+            <p class="issuer">CodeCred</p>
+            <h3>HTML Fundamentals</h3>
+            <div class="cert-meta">
+              <span>Score 80%</span>
+              <span>Beginner</span>
+              <span>Issued Jul 19, 2026</span>
+            </div>
+            <a href="certificate-html.png" target="_blank" rel="noopener">View Certificate →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT / FOOTER ============ -->
+  <section id="contact" class="contact-section">
+    <div class="section-inner">
+      <div class="contact-row reveal">
+        <h2>Let's build<br><strong>something great.</strong></h2>
+        <a href="mailto:hello@francis.dev" class="btn btn-solid">Get In Touch →</a>
+      </div>
+
+      <div class="social-row reveal">
+        <a href="mailto:francisdave102@gmail.com" class="social-link">
+          <span class="social-label">Gmail</span>
+          <span class="social-value">francisdave102@gmail.com</span>
+        </a>
+        <a href="https://facebook.com/francisdave.toledobriones" target="_blank" rel="noopener" class="social-link">
+          <span class="social-label">Facebook</span>
+          <span class="social-value">Francis Dave Toledo Briones</span>
+        </a>
+        <a href="https://github.com/francisdev-briones" target="_blank" rel="noopener" class="social-link">
+          <span class="social-label">GitHub</span>
+          <span class="social-value">github.com/francisdev-briones/</span>
+        </a>
+        <a href="https://www.linkedin.com/in/francis-dave-briones-a219b5422/" target="_blank" rel="noopener" class="social-link">
+          <span class="social-label">LinkedIn</span>
+          <span class="social-value">/in/francis-dave-briones-a219b5422/</span>
+        </a>
+      </div>
+    </div>
+
+    <footer>
+      <span>© 2026 Francis.dev</span>
+      <span>Built with HTML &amp; CSS</span>
+    </footer>
+  </section>
+
+  <script>
+    // ---------- Dripping binary code effect (hero background) ----------
+    (function(){
+      const canvas = document.getElementById('binary-rain');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const hero = document.querySelector('.hero');
+      const fontSize = 15;
+      let width, height, columns, drops, speeds;
+
+      function resize(){
+        width  = canvas.width  = hero.offsetWidth;
+        height = canvas.height = hero.offsetHeight;
+        columns = Math.floor(width / fontSize);
+        drops  = new Array(columns).fill(0).map(() => Math.random() * (height / fontSize));
+        speeds = new Array(columns).fill(0).map(() => 0.4 + Math.random() * 0.9);
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(reduceMotion){
+        ctx.fillStyle = 'rgba(5,5,5,1)';
+        ctx.fillRect(0,0,width,height);
+        return;
+      }
+
+      function draw(){
+        ctx.fillStyle = 'rgba(5,5,5,0.16)';
+        ctx.fillRect(0, 0, width, height);
+        ctx.font = fontSize + 'px "JetBrains Mono", monospace';
+
+        for(let i = 0; i < columns; i++){
+          const char = Math.random() > 0.5 ? '1' : '0';
+          const x = i * fontSize;
+          const y = drops[i] * fontSize;
+
+          // brighter "head" of the drip, faint trailing digits
+          const isHead = Math.random() > 0.92;
+          ctx.fillStyle = isHead ? 'rgba(255,255,255,0.85)' : 'rgba(245,244,240,' + (0.1 + Math.random() * 0.35) + ')';
+          ctx.fillText(char, x, y);
+
+          if(y > height && Math.random() > 0.975){
+            drops[i] = 0;
+          }
+          drops[i] += speeds[i];
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+
+    // ---------- Scroll reveal ----------
+    (function(){
+      const targets = document.querySelectorAll('.reveal, .reveal-stagger');
+      if(!('IntersectionObserver' in window) || targets.length === 0){
+        targets.forEach(el => el.classList.add('is-visible'));
+        return;
+      }
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+      targets.forEach(el => observer.observe(el));
+    })();
+  </script>
+
+</body>
+</html>
