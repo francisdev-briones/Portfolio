@@ -24,7 +24,7 @@ html,body{margin:0;min-height:100%}
 body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;overflow-x:hidden}
 
 /* HERO (sticky so the next sections slide over it) */
-.hero{position:sticky;top:0;z-index:0;height:100vh;min-height:640px;overflow:hidden;display:flex;flex-direction:column}
+.hero{position:sticky;top:0;z-index:0;height:100vh;height:100svh;min-height:0;overflow:hidden;display:flex;flex-direction:column}
 .binary-rain{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.55}
 .hero-photo{position:absolute;top:0;right:0;width:72%;height:100%;z-index:0;overflow:hidden;pointer-events:none}
 .hero-photo img{position:absolute;bottom:-8vh;left:57%;height:calc(100% - 100px + 10vh);width:auto;max-width:none;object-fit:contain;object-position:bottom;display:block;
@@ -49,12 +49,12 @@ nav ul a:hover,nav ul a.active{opacity:1}nav ul a:hover::after,nav ul a.active::
 .contact-btn{border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.78rem;letter-spacing:.06em;padding:11px 22px;border-radius:100px;white-space:nowrap;transition:.2s}
 .contact-btn:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 
-.hero-body{position:relative;z-index:5;width:100%;max-width:1400px;margin:0 auto;padding:90px 60px 0;flex:1;display:flex;flex-direction:column;justify-content:center;pointer-events:none;will-change:transform,opacity}
+.hero-body{position:relative;z-index:5;width:100%;max-width:1400px;margin:0 auto;padding:90px 60px 0;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;pointer-events:none;will-change:transform,opacity}
 .hero-text{max-width:640px;pointer-events:auto}
 .eyebrow{font-family:'JetBrains Mono',monospace;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 22px}
 .hero-text .eyebrow{animation:fadeInUp .7s var(--ease) both .15s}
 .hero-text .eyebrow::after{content:"_";margin-left:2px;animation:blink 1.1s step-end infinite}
-.hero-text h1{font-family:'Archivo',sans-serif;font-weight:300;font-size:4.5rem;line-height:.98;letter-spacing:-.01em;text-transform:uppercase;margin:0 0 26px}
+.hero-text h1{font-family:'Archivo',sans-serif;font-weight:300;font-size:clamp(2.6rem,9vh,4.5rem);line-height:.98;letter-spacing:-.01em;text-transform:uppercase;margin:0 0 26px}
 .hero-text h1 strong{font-weight:700}
 .hero-text h1 .line{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em;min-height:1.08em}
 .hero-text h1 .line>span{display:block;animation:lineUp 1s var(--ease) both}
@@ -68,9 +68,10 @@ nav ul a:hover,nav ul a.active{opacity:1}nav ul a:hover::after,nav ul a.active::
 .btn::before{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);transition:left .55s ease}
 .btn:hover::before{left:120%}
 
-.stats{position:relative;z-index:5;width:100%;max-width:1400px;margin:0 auto;padding:30px 60px;display:grid;grid-template-columns:repeat(4,auto);gap:40px;border-top:1px solid var(--line);pointer-events:none;animation:fadeIn 1s ease both 1.1s}
+.stats{position:relative;z-index:5;width:100%;max-width:1400px;margin:0 auto;padding:26px 60px calc(36px + env(safe-area-inset-bottom,0px));flex-shrink:0;display:grid;grid-template-columns:repeat(4,auto);gap:40px;border-top:1px solid var(--line);pointer-events:none;animation:fadeIn 1s ease both 1.1s}
 .stat h3{font-family:'Archivo',sans-serif;font-weight:700;font-size:2.1rem;margin:0 0 6px;font-variant-numeric:tabular-nums}
 .stat p{font-size:.76rem;letter-spacing:.04em;color:var(--muted);margin:0}
+@media (max-height:720px){.hero-body{padding-top:80px}.hero-text h1{margin-bottom:16px}.hero-text p.lead{margin-bottom:22px}.stats{padding-top:16px;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}.stat h3{font-size:1.6rem}}
 
 /* Everything after the hero slides over it */
 .cover{position:relative;z-index:2;background:var(--bg);border-radius:32px 32px 0 0;box-shadow:0 -40px 80px rgba(0,0,0,.85);border-top:1px solid var(--line)}
@@ -194,7 +195,7 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
   header,header.scrolled{padding:18px 26px}nav ul{display:none}
   .hero-photo{width:100%;opacity:.5}.hero-photo img{height:calc(100% - 96px);bottom:0;max-width:100%}
   .hero-body{padding:90px 26px 0}.hero-text h1{font-size:3rem}
-  .stats{grid-template-columns:repeat(2,1fr);padding:20px 26px 28px;gap:18px}
+  .stats{grid-template-columns:repeat(2,1fr);padding:18px 26px calc(32px + env(safe-area-inset-bottom,0px));gap:14px}
   .section-inner,.contact-section .section-inner{padding:70px 26px}.contact-section .section-inner{padding:44px 26px 32px;gap:22px}
   .about-grid{grid-template-columns:1fr;gap:36px}.about-photo{max-width:360px}
   .projects-grid,.cert-grid{grid-template-columns:1fr}
@@ -250,9 +251,9 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
   </div>
   <div class="stats">
     <div class="stat"><h3 data-count="3" data-suffix="+">3+</h3><p>Years Writing Code</p></div>
-    <div class="stat"><h3 data-count="2" data-suffix="+">2+</h3><p>Projects Shipped</p></div>
-    <div class="stat"><h3 data-count="100" data-suffix="%">100%</h3><p>Client Satisfaction</p></div>
-    <div class="stat"><h3 data-count="2" data-suffix="">2</h3><p>Certifications Earned</p></div>
+    <div class="stat"><h3 data-count="3" data-suffix="+">3</h3><p>Projects Created</p></div>
+    <div class="stat"><h3 data-count="100" data-suffix="%">99%</h3><p>Client Satisfaction</p></div>
+    <div class="stat"><h3 data-count="3" data-suffix="">3</h3><p>Certifications Earned</p></div>
   </div>
 </section>
 
@@ -311,7 +312,8 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
             <p class="d-desc">This system — an accurate and real-time responsive voting system built from semantic HTML, hand-written CSS, vanilla JavaScript and PHP. Features the simple and elegant user experience.</p>
             <p class="d-fb">"Clean, fast, and easy to navigate. It gave me a clear picture of Francis's skills in under a minute."</p>
             <cite class="d-by">— Prof. Dominic Azupardo, Tech Professor</cite>
-            <a href="#" target="_blank" rel="noopener">Live Site →</a>
+            <a href="https://your-username.github.io/your-repo/" target="_blank" rel="noopener">Live Site →</a>
+            <a href="https://github.com/your-username/your-repo" target="_blank" rel="noopener">Source Code →</a>
           </div>
         </div>
       </div>
@@ -323,11 +325,12 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
           <h3>CCDI Enrollment System</h3>
           <div class="links"><button type="button" class="detail-link">View Details →</button></div>
           <div class="project-data">
-            <span class="d-dur">⏱ Jul 2026 — 3 weeks</span>
+            <span class="d-dur">⏱ Jul 2026 — 2 weeks</span>
             <p class="d-desc">A reliable online website for efficient process of enrollment. Built a strong information requirements to ensure proper school records, using HTML, CSS, JavaScript, and PHP. Featuring a high-quality UI designs and user experience.</p>
             <p class="d-fb">"Simple to use and it actually makes my enrollment efficient and accurate."</p>
             <cite class="d-by">— Mark Genesis Espejo, BSIT C</cite>
             <a href="#" target="_blank" rel="noopener">Live Demo →</a>
+            <a href="#" target="_blank" rel="noopener">Source Code →</a>
           </div>
         </div>
       </div>
@@ -339,11 +342,12 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
           <h3>AquaDam Web-page</h3>
           <div class="links"><button type="button" class="detail-link">View Details →</button></div>
           <div class="project-data">
-            <span class="d-dur">⏱ Sept 2026 — 2 weeks</span>
+            <span class="d-dur"></span>
             <p class="d-desc">A web-based management page for the AquaDam water refilling station, built with HTML, CSS, JavaScript, PHP and MySQL. It keeps sales, inventory, expenses and customer records in one clean dashboard.</p>
             <p class="d-fb">"This helps our customers find our service and quality."</p>
             <cite class="d-by">— Adam Briones, Business Owner</cite>
             <a href="https://aquadam.netlify.app/" target="_blank" rel="noopener">Live Demo →</a>
+            <a href="#">Source Code →</a>
           </div>
         </div>
       </div>
