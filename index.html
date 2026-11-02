@@ -19,9 +19,9 @@
 <style>
 :root{--bg:#050505;--panel:#0a0a0a;--ink:#f5f4f0;--muted:#9a9a94;--line:rgba(245,244,240,.14);--ease:cubic-bezier(.22,.8,.24,1)}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:clip;max-width:100%}
 html,body{margin:0;min-height:100%}
-body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;overflow-x:clip;max-width:100%}
 
 /* HERO (sticky so the next sections slide over it) */
 .hero{position:sticky;top:0;z-index:0;height:100vh;height:100svh;min-height:0;overflow:hidden;display:flex;flex-direction:column}
@@ -93,7 +93,7 @@ section{scroll-margin-top:70px}
 .about-content .section-head{margin-bottom:32px}
 .body-text{color:var(--muted);font-size:1.02rem;line-height:1.85;max-width:700px;margin:0}
 
-.skills-section{background:var(--bg);border-top:1px solid var(--line)}
+.skills-section{background:var(--bg);border-top:1px solid var(--line);overflow-x:clip}
 .tech-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}
 .tech-tile{background:var(--panel);border:1px solid var(--line);padding:24px 20px;display:flex;flex-direction:column;align-items:flex-start;gap:16px;
   transition:background .25s,border-color .25s,transform .3s var(--ease);will-change:transform,opacity}
@@ -148,7 +148,7 @@ section{scroll-margin-top:70px}
 footer{border-top:1px solid var(--line);padding:26px 60px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.75rem;color:var(--muted)}
 
 /* LOADER */
-.loader{position:fixed;inset:0;z-index:200;background:var(--bg);display:none;align-items:center;justify-content:center;transition:transform .9s cubic-bezier(.76,0,.24,1)}
+.loader{position:fixed;inset:0;width:100%;height:100vh;height:100dvh;z-index:200;background:var(--bg);display:none;align-items:center;justify-content:center;transition:transform .9s cubic-bezier(.76,0,.24,1)}
 .js .loader{display:flex}.loader.done{transform:translateY(-100%)}
 .loader-inner{display:flex;flex-direction:column;align-items:center;gap:26px}
 .loader-count{font-family:'Archivo',sans-serif;font-weight:700;line-height:1;font-size:clamp(5rem,17vw,9.5rem)}
