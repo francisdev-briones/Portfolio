@@ -19,8 +19,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#050505;--panel:#0a0a0a;--panel2:#111;--hover:#0f0f0f;--ink:#f5f4f0;--muted:#9a9a94;--bg-rgb:5,5,5;--ink-rgb:245,244,240;--line:rgba(var(--ink-rgb),.14);--ease:cubic-bezier(.22,.8,.24,1);--hero-b:1.25;--cover-shadow:0 -40px 80px rgba(0,0,0,.85);--glass-shadow:0 10px 40px rgba(0,0,0,.4);color-scheme:dark}
-:root[data-theme="light"]{--bg:#f5f4f0;--panel:#ebeae4;--panel2:#dfded7;--hover:#e4e3dc;--ink:#0d0d0d;--muted:#5d5d57;--bg-rgb:245,244,240;--ink-rgb:13,13,13;--hero-b:1;--cover-shadow:0 -30px 70px rgba(0,0,0,.16);--glass-shadow:0 10px 40px rgba(0,0,0,.12);color-scheme:light}
+:root{--bg:#050505;--panel:#0a0a0a;--panel2:#111;--hover:#0f0f0f;--ink:#f5f4f0;--muted:#9a9a94;--bg-rgb:5,5,5;--ink-rgb:245,244,240;--line:rgba(var(--ink-rgb),.14);--ease:cubic-bezier(.22,.8,.24,1);--hero-b:1.25;--cover-shadow:0 -40px 80px rgba(0,0,0,.85);--glass-shadow:0 10px 40px rgba(0,0,0,.4);--mist-a:.07;color-scheme:dark}
+:root[data-theme="light"]{--bg:#f5f4f0;--panel:#ebeae4;--panel2:#dfded7;--hover:#e4e3dc;--ink:#0d0d0d;--muted:#5d5d57;--bg-rgb:245,244,240;--ink-rgb:13,13,13;--hero-b:1;--cover-shadow:0 -30px 70px rgba(0,0,0,.16);--glass-shadow:0 10px 40px rgba(0,0,0,.12);--mist-a:.10;color-scheme:light}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:clip;max-width:100%}
 html,body{margin:0;min-height:100%}
@@ -264,19 +264,72 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 .about-tags span{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line);border-radius:100px;padding:6px 13px}
 .section-intro{max-width:620px;margin:22px auto 0;color:var(--muted);font-size:.98rem;line-height:1.75}
 
-/* ===== Hidden by default (shown only on mobile) ===== */
+/* ===== Hidden by default (shown only on mobile or laptop where noted) ===== */
 .hero-name,.hero-status,.hero-meta{display:none}
 .stats{display:none}
 .menu-toggle{display:none}
 .mobile-menu{display:none}
 .stats-mobile{display:none}
 .mobile-intro-slot{display:none}
+.float-chip{display:none}
 
 /* ===== Laptop / desktop: full-body photo, bottom-anchored, centered in the right side ===== */
 @media (min-width:981px){
   .hero-photo img{bottom:0;top:auto;left:50%;height:92svh;width:auto;max-width:none;
     transform:translate3d(-50%,var(--py,0px),0);-webkit-mask-image:none;mask-image:none}
 }
+
+/* ===== LAPTOP ENHANCEMENTS (grid, mist, floating cards). Not applied on phones. ===== */
+@media (min-width:981px){
+  /* hero grid + spotlight behind the portrait */
+  .hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      radial-gradient(ellipse 55% 50% at 68% 46%,rgba(var(--ink-rgb),.07),transparent 70%),
+      linear-gradient(rgba(var(--ink-rgb),.055) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(var(--ink-rgb),.055) 1px,transparent 1px);
+    background-size:auto,64px 64px,64px 64px;
+    -webkit-mask-image:radial-gradient(ellipse 85% 80% at 50% 50%,#000 40%,transparent 100%);
+    mask-image:radial-gradient(ellipse 85% 80% at 50% 50%,#000 40%,transparent 100%)}
+
+  /* drifting mist, both themes (uses the ink color so it flips with the theme) */
+  .hero::after{content:"";position:absolute;inset:-15%;z-index:1;pointer-events:none;filter:blur(50px);
+    background:
+      radial-gradient(38% 30% at 22% 68%,rgba(var(--ink-rgb),var(--mist-a)),transparent 70%),
+      radial-gradient(34% 28% at 78% 22%,rgba(var(--ink-rgb),var(--mist-a)),transparent 70%),
+      radial-gradient(45% 25% at 55% 92%,rgba(var(--ink-rgb),calc(var(--mist-a) * .8)),transparent 70%);
+    animation:mistDrift 24s ease-in-out infinite alternate}
+
+  /* headline accent line and eyebrow rule */
+  .hero-text{position:relative;padding-left:26px}
+  .hero-text::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:2px;
+    background:linear-gradient(180deg,rgba(var(--ink-rgb),.75),rgba(var(--ink-rgb),0))}
+  .hero-text .eyebrow::before{content:"";display:inline-block;width:28px;height:1px;background:currentColor;vertical-align:middle;margin-right:14px}
+
+  /* floating glass cards beside the portrait */
+  .float-chip{display:flex;align-items:center;gap:12px;position:absolute;z-index:3;padding:12px 18px 12px 12px;border-radius:16px;
+    background:rgba(var(--bg-rgb),.5);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border:1px solid rgba(var(--ink-rgb),.14);box-shadow:var(--glass-shadow);pointer-events:none;animation:floatY 7s ease-in-out infinite}
+  .float-chip .fc-icon{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(var(--ink-rgb),.1);
+    font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--ink)}
+  .float-chip b{display:block;font-family:'Archivo',sans-serif;font-weight:600;font-size:.9rem;color:var(--ink);margin-bottom:2px}
+  .float-chip span{display:block;font-size:.72rem;color:var(--muted)}
+  .fc-1{top:22%;left:4%}
+  .fc-2{bottom:24%;right:6%;animation-delay:-3.5s}
+
+  /* grid texture for the About and Projects sections */
+  .about-section,.projects-section{position:relative;isolation:isolate;overflow:hidden}
+  .about-section::before,.projects-section::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background-image:linear-gradient(rgba(var(--ink-rgb),.045) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--ink-rgb),.045) 1px,transparent 1px);
+    background-size:56px 56px;
+    -webkit-mask-image:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent);
+    mask-image:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent)}
+  .about-section .section-inner,.projects-section .section-inner{position:relative;z-index:1}
+
+  /* cards: clearer hover depth */
+  .project-card:hover,.cert-card:hover{border-color:rgba(var(--ink-rgb),.35);box-shadow:0 24px 50px -20px rgba(0,0,0,.45)}
+}
+@keyframes mistDrift{from{transform:translate3d(-2%,0,0) scale(1)}to{transform:translate3d(3%,-3%,0) scale(1.08)}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 
 /* ===== MOBILE HERO + LAYOUT =====
    Phones: the hero shows the photo and name. The text block (status, location,
@@ -289,16 +342,17 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
   .hero-name{display:block;position:absolute;top:76px;left:0;right:0;z-index:0;padding:0 22px;text-align:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:clamp(4rem,22vw,7rem);line-height:.86;letter-spacing:-.04em;text-transform:uppercase;color:rgba(var(--ink-rgb),.92)}
   .hero-name span{opacity:.9}
   .hero-photo img{
-  top: auto;
-  bottom: 0;
-  left: 50%;
-  height: 82svh;         
-  width: auto;
-  max-width: none;
-  transform: translate3d(-50%, var(--py, 0px), 0);
-  -webkit-mask-image: none;
-  mask-image: none;
-}
+    top:auto;
+    bottom:0;
+    left:50%;
+    height:82svh;
+    width:auto;
+    max-width:none;
+    transform:translate3d(-50%,var(--py,0px),0);
+    -webkit-mask-image:none;
+    mask-image:none;
+  }
+
   /* the hero's own text container is hidden on phones; its content is moved below */
   .hero-body{display:none}
   .contact-btn{display:none}
@@ -400,6 +454,8 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
   <div class="hero-photo">
     <div class="hero-name" aria-hidden="true">Francis<br>Dave<span>.</span></div>
     <img src="hero_fullbody.png" alt="Francis full-body portrait" decoding="async" onerror="this.style.display='none'">
+    <div class="float-chip fc-1" aria-hidden="true"><div class="fc-icon">&lt;/&gt;</div><div><b>3rd-year IT Student</b><span>Front-end → Full-stack</span></div></div>
+    <div class="float-chip fc-2" aria-hidden="true"><div class="fc-icon">◉</div><div><b>Open to opportunities</b><span>Web development &amp; UI</span></div></div>
   </div>
   <div class="hero-body" id="hero-body">
     <div class="hero-text">
@@ -431,7 +487,7 @@ a:focus-visible,button:focus-visible,.btn:focus-visible{outline:2px solid var(--
 <section class="stats-mobile" aria-label="Highlights">
   <div class="stat"><h3 data-count="3" data-suffix="+">3+</h3><p>Years Writing Code</p></div>
   <div class="stat"><h3 data-count="3" data-suffix="+">3+</h3><p>Projects Shipped</p></div>
-  <div class="stat"><h3 data-count="100" data-suffix="%">98%</h3><p>Client Satisfaction</p></div>
+  <div class="stat"><h3 data-count="98" data-suffix="%">98%</h3><p>Client Satisfaction</p></div>
   <div class="stat"><h3 data-count="3" data-suffix="">3</h3><p>Certifications Earned</p></div>
 </section>
 
